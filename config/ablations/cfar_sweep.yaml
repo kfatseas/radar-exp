@@ -1,0 +1,23 @@
+############################################################
+# CFAR parameter sweep example.                             #
+#                                                          #
+# This ablation sweeps over different CFAR settings to      #
+# evaluate how detection thresholds affect information      #
+# retention and object statistics.                          #
+############################################################
+
+base_config: config/base.yaml
+name: cfar_sweep
+output_root: runs
+
+# Parameter grid specifying values to override in the base
+# configuration.  Keys are dot‑separated paths in the config
+# dictionary.  All combinations of values across keys are
+# enumerated.
+param_grid:
+  cfar.method: [percentile, ca]
+  cfar.percentile: [95.0, 98.0, 99.0]
+  cfar.guard_cells: [1, 2]
+  cfar.ref_cells: [8, 12]
+  cfar.scale: [2.0, 3.0]
+  detect.eps: [0.5, 1.0]

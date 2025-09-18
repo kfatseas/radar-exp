@@ -1,0 +1,89 @@
+############################################################
+# Base configuration for a radar experiment.                #
+#                                                          #
+# Copy this file and modify values to run your own tests.  #
+# Each section is documented inline.                        #
+############################################################
+
+# Optional name for the run.  Used to construct the output
+# directory name.  If omitted the CLI argument `--name` or
+# 'exp' will be used.
+name: example_run
+
+dataset:
+  # Path to the radar recording folder.  The path is passed to
+  # `src.recording.Recording` via the RecordingAdapter.  The example
+  # is a placeholder; adjust to your dataset location.
+  path: "/path/to/recording"
+  # List of frame indices to process.  When omitted, all frames in
+  # the recording are processed (may take a long time).
+  frame_indices: [0]
+
+# Random seed for deterministic behaviour across runs.
+seed: 42
+
+dsp:
+  # Window types for range and Doppler FFTs.  Supported values are
+  # 'hann', 'hamming', 'blackman', 'chebwin' and 'rectangular'.
+  windows:
+    range: hann
+    doppler: hann
+  # FFT sizes.  Use `null` to select the natural length of the axis.
+  fft:
+    range: null
+    doppler: null
+  # How to combine antennas: 'max' or 'sum'.
+  aggregate: max
+  # Magnitude scale: 'db' or 'linear'.  When using 'db' the RD map
+  # values are expressed in decibels.
+  magnitude: db
+
+cfar:
+  # Detection method.  Choose 'percentile' for a global threshold or
+  # 'ca' for cell‑averaging CFAR.  Additional parameters for each
+  # method are defined below.
+  method: percentile
+  # Percentile threshold for 'percentile' method.  Values above this
+  # percentile are considered detections.
+  percentile: 99.0
+  # Number of guard cells (per side) for 'ca' method.
+  guard_cells: 2
+  # Number of reference cells (per side) for 'ca' method.
+  ref_cells: 8
+  # Scale factor for 'ca' method.  Larger values reduce false alarms.
+  scale: 3.0
+
+postproc:
+  # Minimum component size (in pixels) to retain after CFAR.  Small
+  # blobs are removed as noise.
+  min_size: 1
+
+detect:
+  # DBSCAN parameters for clustering points into objects.
+  eps: 1.0
+  min_samples: 5
+
+patch:
+  # Padding around the object bounding box when extracting RD patches.
+  padding: 2
+
+pointcloud:
+  # Size of FFT used to estimate direction of arrival.
+  fft_size: 181
+
+features:
+  # Toggle extraction of RD patch features.
+  rd_features: true
+  # Toggle extraction of point cloud features.
+  pc_features: true
+
+metrics:
+  # Compute information‑loss metrics (energy retention, sparsity, entropy).
+  compute_info_loss: true
+
+# model:
+#   # Uncomment to train a classifier when labels are available.  Supported
+#   # types: 'logistic', 'svm', 'random_forest'.
+#   type: logistic
+#   params:
+#     C: 1.0

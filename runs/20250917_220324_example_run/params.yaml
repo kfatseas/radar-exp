@@ -1,0 +1,35 @@
+cfar:
+  guard_cells: 2
+  method: percentile
+  percentile: 99.0
+  ref_cells: 8
+  scale: 3.0
+dataset:
+  frame_indices:
+  - 0
+  path: /path/to/recording
+detect:
+  eps: 1.0
+  min_samples: 5
+dsp:
+  aggregate: max
+  fft:
+    doppler: null
+    range: null
+  magnitude: db
+  windows:
+    doppler: hann
+    range: hann
+features:
+  pc_features: true
+  rd_features: true
+metrics:
+  compute_info_loss: true
+name: example_run
+patch:
+  padding: 2
+pointcloud:
+  fft_size: 181
+postproc:
+  min_size: 1
+seed: 42

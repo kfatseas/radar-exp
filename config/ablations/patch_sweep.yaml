@@ -1,0 +1,15 @@
+############################################################
+# Patch padding sweep example.                              #
+#                                                          #
+# This ablation explores how the amount of padding added to  #
+# object bounding boxes affects extracted features and      #
+# information‑loss metrics.                                 #
+############################################################
+
+base_config: config/base.yaml
+name: patch_sweep
+output_root: runs
+
+param_grid:
+  patch.padding: [0, 2, 4, 6]
+  detect.eps: [0.5, 1.0]

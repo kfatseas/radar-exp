@@ -1,0 +1,11 @@
+############################################################
+# Example dataset configuration.                            #
+#                                                          #
+# This file demonstrates how to configure the path and      #
+# frames for a dataset.  It can be included or referenced   #
+# from a base configuration via YAML anchors if desired.     #
+############################################################
+
+path: "D:/DataSet/fps10/roomweg_deurningerstraat/"
+# Process the first 3 frames of the recording
+frame_indices: [0, 1, 2]
