@@ -37,10 +37,10 @@ class RecordingAdapter:
         # Lazy import to avoid hard dependency when building documentation.
         if self.record_cls is None:
             try:
-                from src.recording import Recording  # type: ignore
+                from .dolphine import Recording  # type: ignore
             except ImportError as exc:
                 raise ImportError(
-                    "RecordingAdapter requires src.recording.Recording to be available"
+                    "RecordingAdapter requires dolphine.Recording to be available"
                 ) from exc
             self.record_cls = Recording
         # Instantiate underlying recording

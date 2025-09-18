@@ -1,0 +1,6 @@
+{
+  "energy_retention_mean": 0.0,
+  "sparsity_mean": 0.13042391498360967,
+  "entropy_diff_mean": 3.270263238931859,
+  "run_dir": "runs/20250918_144504_example_run"
+}

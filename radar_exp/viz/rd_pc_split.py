@@ -10,6 +10,9 @@ from __future__ import annotations
 
 from typing import Iterable, List, Optional
 
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -139,7 +142,8 @@ def visualize_split(
     cbar = plt.colorbar(im, ax=ax_right, fraction=0.046, pad=0.04)
     cbar.set_label('Spectral Power (dB)', fontsize=12)
     plt.tight_layout()
-    plt.show()
+    plt.savefig('output.png')
+    print('Plot saved as output.png')
     # Print summary
     print("\n=== Point Cloud vs Spectrum Visualization ===")
     n_points = sum(len(obj) for obj in objs)

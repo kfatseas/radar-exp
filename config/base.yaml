@@ -14,7 +14,7 @@ dataset:
   # Path to the radar recording folder.  The path is passed to
   # `src.recording.Recording` via the RecordingAdapter.  The example
   # is a placeholder; adjust to your dataset location.
-  path: "/path/to/recording"
+  path: "/home/yuqi/roomweg_east"
   # List of frame indices to process.  When omitted, all frames in
   # the recording are processed (may take a long time).
   frame_indices: [0]
@@ -60,7 +60,7 @@ postproc:
 
 detect:
   # DBSCAN parameters for clustering points into objects.
-  eps: 1.0
+  eps: 2.0
   min_samples: 5
 
 patch:
