@@ -1,6 +1,6 @@
 import numpy as np
 
-from radar_exp.dsp.cfar import PercentileCFAR, CACFAR
+from radar_exp.dsp.cfar import PercentileCFAR, CACFAR, ColumnNoiseCFAR
 
 
 def test_percentile_cfar_detects_strong_cell() -> None:
@@ -21,3 +21,15 @@ def test_ca_cfar_reference_cells() -> None:
     mask = detector.detect(rd_map)
     # Should detect the strong cell
     assert mask[10, 10]
+
+
+def test_column_noise_cfar_per_column_threshold() -> None:
+    # Create a map with a per-column baseline and a strong outlier
+    rd_map = np.tile(np.linspace(1.0, 2.0, 10)[None, :], (10, 1))
+    rd_map[4, 7] = 5.0
+    # 10% above per-column median should detect only the strong cell in that column
+    det = ColumnNoiseCFAR(axis="col", percentage=10.0, reducer="median")
+    mask = det.detect(rd_map)
+    assert mask[4, 7]
+    # Ensure not too many false detections
+    assert np.sum(mask) == 1

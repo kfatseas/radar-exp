@@ -3,3 +3,6 @@ scipy
 matplotlib
 scikit-learn
 pyyaml
+holoviews
+panel
+bokeh

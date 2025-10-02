@@ -45,8 +45,8 @@ def cluster_points(
     """
     if not points:
         return []
-    # Build feature array: [range, velocity, doa]
-    feats = np.array([[p.range_bin, p.velocity_bin, p.doa] for p in points])
+    # Build feature array: [x, y, velocity_bin] (all in meters)
+    feats = np.array([[p.x, p.y, p.velocity_bin] for p in points])
     # Run DBSCAN
     clustering = DBSCAN(eps=eps, min_samples=min_samples)
     labels = clustering.fit_predict(feats)

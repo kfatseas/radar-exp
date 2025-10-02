@@ -14,7 +14,8 @@ dataset:
   # Path to the radar recording folder.  The path is passed to
   # `src.recording.Recording` via the RecordingAdapter.  The example
   # is a placeholder; adjust to your dataset location.
-  path: "/home/yuqi/roomweg_east"
+  # path: "/home/yuqi/roomweg_east"
+  path: "D:/DataSet/fps10/roomweg_deurningerstraat"
   # List of frame indices to process.  When omitted, all frames in
   # the recording are processed (may take a long time).
   frame_indices: [0]

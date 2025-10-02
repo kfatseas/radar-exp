@@ -50,7 +50,13 @@ def detect_peaks(
         postproc_cfg = {}
     # Instantiate detector
     det, _ = cfar_from_config(cfar_cfg)
-    raw_mask = det.detect(rd_map)
+    method = cfar_cfg.get('method', 'percentile').lower()
+    if method in {'ca', 'cacfar', 'axis'}:
+        # CA CFAR and axis CFAR require linear scale for proper calculations
+        linear_map = 10**(rd_map / 20)
+        raw_mask = det.detect(linear_map)
+    else:
+        raw_mask = det.detect(rd_map)
     # Clean mask
     min_size = int(postproc_cfg.get("min_size", 1))
     mask = clean_mask(raw_mask, min_size=min_size)

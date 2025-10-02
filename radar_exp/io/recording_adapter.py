@@ -45,6 +45,10 @@ class RecordingAdapter:
             self.record_cls = Recording
         # Instantiate underlying recording
         self.rec = self.record_cls(self.path)
+        # Convert max velocity from km/h to m/s if needed
+        if "max velocity" in self.rec.settings:
+            v = float(self.rec.settings["max velocity"].item())
+            self.rec.settings["max velocity"] = v / 3.6
 
     def get_frame(self, idx: int) -> Any:
         """Return the raw radar cube for the given frame index.

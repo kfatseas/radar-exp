@@ -9,7 +9,7 @@ range–Doppler detections into physical point clouds.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Tuple, Optional
+from typing import Iterable, List, Sequence, Tuple, Optional
 
 import numpy as np
 from scipy import signal
@@ -151,8 +151,9 @@ def create_points(
         Maximum detectable range in metres.
     max_velocity : float
         Maximum radial velocity in m/s.
-    coords : np.ndarray
-        Array of integer `(r_idx, d_idx)` coordinates indicating detections.
+    coords : array-like or mask
+        Either an array of integer `(r_idx, d_idx)` coordinates with shape
+        `(n, 2)` or a boolean mask with shape equal to `rd_map`.
     doa_fft_size : int, optional
         FFT size for DoA estimation.  Defaults to 181.
 
@@ -166,11 +167,27 @@ def create_points(
     # Precompute range and velocity bin centres
     range_bins = np.linspace(0.0, max_range, n_range)
     velocity_bins = np.linspace(-max_velocity, max_velocity, n_doppler)
-    for (r_idx, d_idx) in coords:
+    # Normalise coordinates input
+    if isinstance(coords, np.ndarray) and coords.dtype == bool:
+        coord_pairs = np.column_stack(np.nonzero(coords))
+    else:
+        coord_array = np.asarray(coords)
+        if coord_array.ndim == 2 and coord_array.shape[-1] == 2:
+            coord_pairs = coord_array
+        elif coord_array.ndim == 2 and coord_array.shape == rd_map.shape:
+            coord_pairs = np.column_stack(np.nonzero(coord_array))
+        else:
+            raise ValueError(
+                "coords must be an array of (r_idx, d_idx) pairs or a boolean mask"
+            )
+
+    coord_pairs = np.asarray(coord_pairs, dtype=int)
+
+    for (r_idx, d_idx) in coord_pairs:
         # rd_cube has shape (antennas, doppler, range)
         snapshot = rd_cube[:, d_idx, r_idx]
         rng = float(range_bins[r_idx])
-        vel = float(velocity_bins[d_idx])
+        vel = float(velocity_bins[d_idx])  # velocity in m/s
         doa = estimate_doa(snapshot, fft_size=doa_fft_size)
         rcs = float(rd_map[r_idx, d_idx])
         # Convert to Cartesian coordinates

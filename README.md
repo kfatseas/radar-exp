@@ -1,3 +1,17 @@
+# TODOs / Open Issues & Features
+
+This section tracks open issues and features to be added to the radar-exp project.
+
+## Open Issues
+
+- [ ] **Velocity unit inconsistency:** Velocity is currently handled in km/h in some parts of the code, but all plots and algorithms expect m/s. Refactor all code to use m/s as the default unit for velocity, and only convert to km/h or mph for display/export purposes.
+
+## Features to Add
+
+- [ ] Interactive CFAR parameter tuning dashboard (Holoviews/Bokeh)
+- [ ] Improved gallery visualization for object patches and point clouds
+- [ ] Export results to more formats (CSV, NPZ, etc.)
+- [ ] Add more clustering algorithms and evaluation metrics
 ## Radar Experiment Toolkit
 
 This repository provides a modular framework for conducting experiments with
@@ -104,31 +118,6 @@ consists of the following sections:
 Fully worked examples can be found in `config/base.yaml` and
 `config/ablations/cfar_sweep.yaml`.  Comments inside these files explain
 each option.
-
-### Migration map
-
-This repository refactors the monolithic script in
-`radar_object_detection.py` into a modular package.  The table below
-summarises where the original functions and classes can be found now:
-
-| Old function/class                    | New module & function                     |
-|--------------------------------------|-------------------------------------------|
-| `compute_range_fft`                  | `radar_exp.dsp.fft.range_fft`             |
-| `compute_velocity_fft`               | `radar_exp.dsp.fft.velocity_fft`          |
-| `compute_range_doppler_map`          | `radar_exp.dsp.rd_map.compute_range_doppler_map` |
-| `detect_objects_in_rd_map`           | `radar_exp.detect.peaks.detect_peaks` (CFAR/threshold) |
-| `extract_point_clouds`               | `radar_exp.detect.pointcloud.create_points` |
-| `visualize_detections_and_point_clouds` | `radar_exp.viz.rd_pc_split.visualize_split` |
-| `estimate_doa`                       | `radar_exp.detect.pointcloud.estimate_doa` |
-| `Point` class                        | `radar_exp.detect.pointcloud.Point` (dataclass) |
-| `Object` class                       | `radar_exp.detect.pointcloud.Object` (dataclass) |
-
-To reproduce the plot created by `plot_rd_simple.py`, call the
-visualiser from the new API as shown in the quickstart above.  The
-default settings mirror the behaviour of the original script: a Hann
-window, magnitude RD map aggregated over antennas by maximum, a 99th
-percentile threshold for detection, basic DBSCAN clustering and a
-two‑panel split view.
 
 ### Example commands
 
